@@ -1,0 +1,68 @@
+1.
+django-admin startproject mysite djangotutorial
+
+2.
+python manage.py runserver
+
+3.Creating the Polls app
+
+python manage.py startapp polls
+
+4.Write your first view
+
+polls/views.py
+
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
+
+5.define a URL configuration, or “URLconf” for short.
+
+polls/urls.py :
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("", views.index, name="index"),
+]
+
+6. configure the root URLconf in the mysite
+
+mysite/urls.py
+
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+         path("polls/", include("polls.urls")),
+         path("admin/", admin.site.urls),
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
