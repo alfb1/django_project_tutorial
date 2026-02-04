@@ -1,1 +1,2 @@
-"# django_project_tutorial" 
+DJANGO TUTORIAL FROM https://docs.djangoproject.com/
+
