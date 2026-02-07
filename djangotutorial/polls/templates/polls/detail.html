@@ -12,14 +12,18 @@
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>
         {% if error_message %} 
+           <!-- polls.views.py.vote : "error_message" : "You didn't select a choice." -->      
            <p><strong> {{error_message}} </strong></p>
         {% endif %}   
         
         {% for choice in question.choice_set.all %}
+        <!-- when somebody selects one of the radio buttons and submits the form, 
+             it’ll send the POST data choice=# where # is the ID of the selected choice-->
            <input type="radio" 
                   name="choice"
                   id="choice"{{forloop.counter}}
                   value="{{ choice.id }}">
+            <!--forloop.counter indicates how many times the for tag has gone through its loop-->      
             <label for="choice"{{forloop.counter}}>
                 {{ choice.choice_text }}
             </label> <br>
