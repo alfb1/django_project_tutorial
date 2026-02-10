@@ -110,6 +110,13 @@ class DetailView(generic.DetailView):
     # Each generic view needs to know what model it will be acting upon.
     model = Question
     template_name = "polls/detail.html"
+
+    def get_queryset(self):
+        """ 
+        Excludes any questions that aren't published yet.   
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
     """
        In previous parts of the tutorial, the templates have been 
     provided with a context that contains the question and 
@@ -122,3 +129,10 @@ class ResultsView(generic.DetailView):
     # Each generic view needs to know what model it will be acting upon.
     model = Question 
     template_name = "polls/results.html"
+
+    def get_queryset(self):
+        """ 
+        Excludes any questions that aren't published yet.   
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+

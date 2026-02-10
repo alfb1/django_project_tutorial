@@ -106,3 +106,70 @@ class QuestionIndexViewTests(TestCase):
             response.context["latest_question_list"],
             [question2, question1]
         )
+
+"""
+    Testing the DetailView
+
+    What we have works well; however, even though future questions don’t appear in the index, 
+users can still reach them if they know or guess the right URL. So we need to add a 
+similar constraint to DetailView:
+"""
+
+class QuestionDetailViewTests(TestCase):
+    def test_future_question(self):
+        """
+            The detail view of a question with a pub_date in the future
+        returns a 404 not found.
+        """
+
+        future_question = create_question(question_text="Future question.", days=5)
+        url = reverse("polls:detail",args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_past_question(self):
+        """
+            The detail view of a question with a pub_date in the past
+        displays the question's text.
+        """
+        past_question = create_question(question_text="Past Question.", days=-5)
+        url = reverse("polls:detail", args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertContains(response, past_question.question_text)
+
+"""
+    Testing the ResultView
+
+    What we have works well; however, even though future questions don’t appear in the index, 
+users can still reach them if they know or guess the right URL. So we need to add a 
+similar constraint to ResultView:
+"""
+
+class QuestionResultViewTests(TestCase):
+    def test_future_question(self):
+        """ The result view of a question with a pub_date in the future
+        returns a 404 - not found."""
+        future_question = create_question(question_text="Future question.", days=5)
+        url = reverse("polls:results", args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_past_question(self):
+        """ 
+            The result view of a question with a pub_date in the past
+        display the question's text
+        """
+        past_question = create_question(question_text="Past Question.", days=-5)
+        url = reverse("polls:results", args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertContains(response, past_question.question_text)
+
+"""
+Ideas for more tests
+
+    We could also improve our application in other ways, adding tests along the way. For example, 
+it’s pointless that a Question with no related Choice can be published on the site. So, our views 
+could check for this, and exclude such Question objects. Our tests would create a Question without 
+a Choice, and then test that it’s not published, as well as create a similar Question with at least 
+one Choice, and test that it is published.
+"""
