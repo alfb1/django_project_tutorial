@@ -52,10 +52,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "mysite.urls"
 
+"""
+Where are the Django source files?
+
+If you have difficulty finding where the Django source files are located on your system, run the following command:
+
+$ python -c "import django; print(django.__path__)"
+
+"""
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
