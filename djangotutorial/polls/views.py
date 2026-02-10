@@ -6,6 +6,7 @@ from django.urls import reverse
 from .models import Question, Choice 
 #  Use generic views:
 from django.views import generic
+from django.utils import timezone
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
@@ -89,9 +90,11 @@ class IndexView(generic.ListView):
     # or by defining the get_queryset() method. 
     def get_queryset(self):
         """
-          Return the last five published questions.
+          Return the last five published questions (not including 
+        those set to be published in the future).
         """
-        return Question.objects.order_by("-pub_date")[:5]
+        # return Question.objects.order_by("-pub_date")[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
 
 class DetailView(generic.DetailView):
     """
